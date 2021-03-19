@@ -22,11 +22,10 @@ let send_notification changed_files =
 
 let repo_dir = Sys.argv.(1)
 
-let return_code =
+let () =
   (Sys.readdir repo_dir)
   |> Array.to_list
   |> List.filter config_file
   |> List.filter (changed repo_dir)
   |> send_notification
-
-let () = exit return_code
+  |> exit
