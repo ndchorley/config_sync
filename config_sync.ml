@@ -10,11 +10,23 @@ let changed repo_dir file =
 
   (Sys.command command) = 1
 
+let message changed_files =
+  changed_files
+  |> List.fold_left (fun acc file -> acc ^ file ^ "\n") "\n"
+  |> (fun changes_string ->
+    "The following config files have changed:" ^ changes_string)
+
+let send_notification changed_files =
+  Sys.command ("notify-send \"" ^ (message changed_files)
+                 ^ "\"")
+
 let repo_dir = Sys.argv.(1)
 
-let () =
+let return_code =
   (Sys.readdir repo_dir)
   |> Array.to_list
   |> List.filter config_file
   |> List.filter (changed repo_dir)
-  |> List.iter print_endline
+  |> send_notification
+
+let () = exit return_code
