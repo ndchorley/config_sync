@@ -1,0 +1,2 @@
+(executable
+ (name config_sync))
