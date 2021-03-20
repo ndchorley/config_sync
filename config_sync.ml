@@ -25,7 +25,7 @@ let repo_dir = Sys.argv.(1)
 let () =
   (Sys.readdir repo_dir)
   |> Array.to_list
-  |> List.find_all config_file
-  |> List.find_all (changed repo_dir)
+  |> List.find_all
+       (fun file -> (config_file file) && (changed repo_dir file))
   |> send_notification
   |> exit
